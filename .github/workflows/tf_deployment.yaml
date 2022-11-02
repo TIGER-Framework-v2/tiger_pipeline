@@ -1,38 +1,36 @@
-name: Provision S3
+name: Provision AWS infrastructure via Terraform
 on:
   push:
     branches:
       - 'feature/*'
-
+      - 'main'
+      -
 jobs:
-#  checkout_code:
-#    name: Checkout source code
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout source code
-#        uses: actions/checkout@v3
-
-  tf_plan:
+  tf_deployment:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: Checkout Terraform code
         uses: actions/checkout@v3
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: '${{ secrets.AWS_KEY_ID }}'
           aws-secret-access-key: '${{ secrets.AWS_SECRET_KEY }}'
           aws-region: us-east-2
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.3
-      - name: Terraform Plan
+
+      - name: Plan infrastructure changes
         working-directory: ./tf
         run: |        
           terraform init
           terraform validate          
           terraform plan -out=terraform.plan
+
       - name: Terraform SAST by Checkov
         uses: bridgecrewio/checkov-action@master
         with:
@@ -41,18 +39,14 @@ jobs:
           soft_fail: true # optional: do not return an error code if there are failed checks
           framework: terraform
           log_level: WARNING
-          output_format: cli # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif          
-      - name: Applying Terraform code
+          output_format: cli # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
+
+      - name: Terraform code deployment
         working-directory: ./tf
         run: terraform apply -auto-approve terraform.plan
+
       - name: Configuration drift check using Driftctl 
         uses: snyk/driftctl-action@v1
         with:
           version: 0.38.1 
           args: --from tfstate://tf/terraform.tfstate --output console://
-#   tf_apply:
-#     runs-on: ubuntu-latest
-#     needs: [tf_plan]
-#     steps:
-#       - name: Apply Terraform code
-#         run: terraform apply -auto-approve terraform.plan
