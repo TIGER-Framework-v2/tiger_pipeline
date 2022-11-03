@@ -3,6 +3,15 @@ provider "aws" {
   region  = "us-east-2"
 }
 
+terraform {
+  backend "s3" {
+    bucket = "tiger-pipeline-tf-state"
+    key    = "terraform.tfstate"
+    region = "us-east-2"
+  }
+}
+
+
 resource "aws_s3_bucket" "tf_test_bucket" {
   bucket = var.test_bucket_name
 

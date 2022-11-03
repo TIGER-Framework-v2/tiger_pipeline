@@ -45,8 +45,8 @@ jobs:
         working-directory: ./tf
         run: terraform apply -auto-approve terraform.plan
 
-      - name: Configuration drift check using Driftctl 
-        uses: snyk/driftctl-action@v1
-        with:
-          version: 0.38.1 
-          args: --from tfstate://tf/terraform.tfstate --output console://
+#      - name: Configuration drift check using Driftctl
+#        uses: snyk/driftctl-action@v1
+#        with:
+#          version: 0.38.1
+#          args: --from tfstate://tf/terraform.tfstate --output console://
