@@ -1,2 +1,2 @@
 # tiger_pipeline
-TIGER pipeline repository contains all the testing features for demonstration purposes
+TIGER (con**TI**nuous testin**G** fram**E**wo**R**k) pipeline repository contains GitHub workflows with implemented actions for the demonstration purposes.
