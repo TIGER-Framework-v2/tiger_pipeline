@@ -24,7 +24,7 @@ jobs:
           LOG_LEVEL: warn
         with:
           version: 0.38.1
-          args: --from tfstate+s3://tiger-pipeline-tf-state/terraform.tfstate --output console:// --to aws+tf --quiet --filter "Type=='aws_s3_bucket'"
+          args: --from tfstate+s3://tiger-pipeline-tf-state/terraform.tfstate --output console:// --to aws+tf --quiet --filter "Type=='aws_s3_bucket'" --only-unmanaged
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
