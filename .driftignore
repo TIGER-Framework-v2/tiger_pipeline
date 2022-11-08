@@ -1,0 +1,2 @@
+# Ignore Terraform state bucket
+aws_s3_bucket.tiger-pipeline-tf-state
