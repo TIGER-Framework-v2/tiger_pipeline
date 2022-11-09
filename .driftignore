@@ -1,2 +1,5 @@
 # Ignore Terraform state bucket
 aws_s3_bucket.tiger-pipeline-tf-state
+aws_s3_bucket_public_access_block.tiger-pipeline-tf-state
+aws_iam_*
+aws_network_acl_*
